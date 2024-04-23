@@ -1,0 +1,79 @@
+#!/bin/bash
+
+# Function to display date and time in GUI info box
+show_datetime() {
+  zenity --info --text="$(date)" --title="Current Date and Time"  
+}
+
+# Function to display calendar in GUI, allows picking a date
+show_calendar() {
+  chosen_date=$(zenity --calendar --title="Choose a Date")
+  if [[ $? -eq 0 ]]; then
+    zenity --info --text="You chose: $chosen_date" --title="Chosen Date"
+    read -p "Enter any information for this date: " info
+    echo "$chosen_date: $info" >> calendar_notes.txt  
+  fi
+}
+
+# Function to delete file using GUI prompts  
+delete_file() {
+  # Ask for directory 
+  dir=$(zenity --file-selection --directory)  
+
+  if [[ $? -eq 0 ]]; then
+    # Show files in GUI, let user pick
+    file=$(zenity --list --title "Select a file" --column "Files" $(ls "$dir"))
+   
+    # Confirm before deleting
+    if zenity --question --text "Delete selected file $file?"; then
+      rm "$dir/$file" 
+    fi
+  fi
+}
+
+# Function to display system configuration information sub-menu
+system_config_info_submenu() {
+  while :
+  do
+    sys_choice=$(zenity --list --title "System Configuration Information" --text "Select an option" --column "Option" "Operating System Type" "Computer CPU Information" "Memory Information" "Hard Disk Information" "File System (Mounted)" "Back")
+  
+    case $sys_choice in
+      "Operating System Type") 
+        os_type=$(uname -s)
+        zenity --info --text="Operating System Type: $os_type" --title="Operating System Type"
+        ;;
+      "Computer CPU Information") 
+        cpu_info=$(lscpu)
+        zenity --info --text="Computer CPU Information:\n$cpu_info" --title="CPU Information"
+        ;;
+      "Memory Information") 
+        mem_info=$(free -h)
+        zenity --info --text="Memory Information:\n$mem_info" --title="Memory Information"
+        ;;
+      "Hard Disk Information") 
+        disk_info=$(df -h)
+        zenity --info --text="Hard Disk Information:\n$disk_info" --title="Hard Disk Information"
+        ;;
+      "File System (Mounted)") 
+        fs_info=$(df -hT)
+        zenity --info --text="File System (Mounted):\n$fs_info" --title="File System (Mounted)"
+        ;;
+      "Back") break;;
+    esac
+  done
+}
+
+
+# Main menu  
+while :
+do
+  choice=$(zenity --list --title "Main Menu" --text "Select an action" --column "Option" "Show Date and Time" "Show Calendar" "Delete File" "System Configuration Information" "Exit")
+  
+  case $choice in
+    "Show Date and Time") show_datetime;;
+    "Show Calendar") show_calendar;;
+    "Delete File") delete_file;;
+    "System Configuration Information") system_config_info_submenu;;
+    "Exit") break;;
+  esac  
+done
