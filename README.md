@@ -18,9 +18,9 @@ System Requirements:
 A Linux operating system with a graphical environment installed (e.g., GNOME, KDE).
 Required Packages:
 Zenity: This is crucial as it provides the graphical interface elements used by the script. Install Zenity using your package manager. For example, on Ubuntu-based systems, you can use:
-
+bash
+Copy code
 sudo apt-get install zenity
-
 Additional Dependencies:
 coreutils: For basic utilities like rm, ls, etc. (usually pre-installed).
 util-linux: For system-related utilities.
@@ -28,18 +28,18 @@ procps or procps-ng: For commands like free.
 lscpu (included in util-linux on most distributions): For CPU architecture information.
 You can install these dependencies using your package manager. On Ubuntu, you can use:
 
+bash
+Copy code
 sudo apt-get install coreutils util-linux procps
-
 Installation Instructions:
 Ensure all the required packages are installed as listed above.
 Download the script to your preferred directory.
 Give the script execute permissions:
-
+bash
+Copy code
 chmod +x [script_name].sh
-
 Run the script from a terminal in the GUI environment:
-
+bash
+Copy code
 ./[script_name].sh
-
-
 Replace [script_name] with the actual name of your script file. This setup will ensure users know how to prepare their environment to run your script effectively.
